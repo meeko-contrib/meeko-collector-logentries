@@ -19,18 +19,15 @@ package handler
 
 import (
 	"encoding/json"
-	"io/ioutil"
 	"net/http"
+	"strings"
 
 	"github.com/meeko/go-meeko/meeko/services/logging"
 )
 
 const EventTypePrefix = "logentries"
 
-const (
-	statusUnprocessableEntity = 422
-	maxBodySize               = int64(10 << 20)
-)
+const statusUnprocessableEntity = 422
 
 type WebhookHandler struct {
 	Logger  *logging.Service
@@ -38,19 +35,16 @@ type WebhookHandler struct {
 }
 
 func (handler *WebhookHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	// Read the request body, up to 10 MB.
-	bodyReader := http.MaxBytesReader(w, r.Body, maxBodySize)
-	defer bodyReader.Close()
-
-	body, err := ioutil.ReadAll(bodyReader)
-	if err != nil {
-		http.Error(w, "Request Payload Too Large", http.StatusRequestEntityTooLarge)
+	// Unmarshal the event object.
+	payload := r.FormValue("payload")
+	if payload == "" {
+		http.Error(w, "Payload Form Field Missing", statusUnprocessableEntity)
 		return
 	}
 
-	// Unmarshal the event object.
 	var eventObject map[string]interface{}
-	if err := json.Unmarshal(body, &eventObject); err != nil {
+	decoder := json.NewDecoder(strings.NewReader(payload))
+	if err := decoder.Decode(&eventObject); err != nil {
 		http.Error(w, "Unexpected Payload: Not Json", http.StatusBadRequest)
 		return
 	}
