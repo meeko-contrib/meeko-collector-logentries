@@ -1,5 +1,8 @@
 # meeko-collector-logentries #
 
+[![Build
+Status](https://drone.io/github.com/meeko-contrib/meeko-collector-logentries/status.png)](https://drone.io/github.com/meeko-contrib/meeko-collector-logentries/latest)
+
 Meeko collector for Logentries webhooks
 
 ## Meeko Variables ##
