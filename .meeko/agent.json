@@ -1,5 +1,5 @@
 {
-  "name": "collector-logentries",
+  "name": "meeko-collector-logentries",
   "version": "0.0.1",
   "description": "Meeko collector for Logentries webhook",
   "clone_dir": "github.com/meeko-contrib/meeko-collector-logentries",
