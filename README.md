@@ -12,6 +12,12 @@ Meeko collector for Logentries webhooks
   expected to be set via a query parameter `token`, e.g.
   `https://example.com?token=secret`.
 
+## Meeko Interface ##
+
+This collector emits `logentries.EVENT_TYPE` events where `EVENT_TYPE` is copied
+from the webhook `event` field. The event body is just what was received as the
+webhook payload.
+
 ## License ##
 
 GNU GPLv3, see the `LICENSE` file.
